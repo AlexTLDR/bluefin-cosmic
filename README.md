@@ -13,7 +13,7 @@ Based on [`ghcr.io/ublue-os/bluefin-dx:stable`](https://github.com/ublue-os/blue
   - `gnome-keyring` — provides the secret service used for Wi-Fi passwords and logins
   - `xdg-desktop-portal-gtk` — file chooser / print / inhibit portals that `xdg-desktop-portal-cosmic` does not implement yet
   - `xdg-desktop-portal-gnome` — invisible portal fallback some flatpaks rely on (add it to the removal list in `recipes/recipe.yml` if you want maximum purity)
-- Automatically purges the GNOME flatpaks that Bluefin pre-installs (Calculator, Calendar, Loupe, Snapshot, …) — a one-time systemd service removes them on first boot and never runs again. `ujust purge-gnome-flatpaks` is also shipped for manual/user-scope cleanup.
+- Automatically purges the GNOME flatpaks that Bluefin pre-installs (Snapshot, Calendar, Loupe, …) — a one-time systemd service removes them on first boot and never runs again. `org.gnome.Calculator` is kept (no COSMIC calculator exists) and `ujust purge-gnome-flatpaks` is shipped for manual/user-scope cleanup.
 
 ## Installation
 

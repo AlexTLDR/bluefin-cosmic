@@ -35,6 +35,8 @@ modules:
         - cosmic-idle
         - cosmic-wallpapers
         - cosmic-icon-theme
+        - cosmic-monitor # native COSMIC system monitor (replaces GNOME System Monitor)
+        - cosmic-config-fedora # Fedora-tuned COSMIC defaults
         - xdg-desktop-portal-cosmic
         # Not hard dependencies, but needed by COSMIC at runtime -> keep:
         # gnome-keyring provides the org.freedesktop.secrets service that

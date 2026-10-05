@@ -7,7 +7,7 @@ ConditionPathExists=!/var/lib/bluefin-cosmic/gnome-flatpaks-purged
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash -c 'for app in org.gnome.Snapshot org.gnome.SimpleScan org.gnome.Loupe org.gnome.Showtime org.gnome.Decibels org.gnome.Calculator org.gnome.Calendar org.gnome.Characters org.gnome.clocks org.gnome.Connections org.gnome.Contacts org.gnome.Maps org.gnome.Weather org.gnome.Logs org.gnome.Papers org.gnome.Extensions org.gnome.NautilusPreviewer org.gnome.FileRoller org.gnome.TextEditor org.gnome.baobab org.gnome.font-viewer; do flatpak uninstall --system --noninteractive -y "$app" >/dev/null 2>&1 || true; done; flatpak uninstall --system --noninteractive -y --unused >/dev/null 2>&1 || true; mkdir -p /var/lib/bluefin-cosmic && touch /var/lib/bluefin-cosmic/gnome-flatpaks-purged'
+ExecStart=/usr/bin/bash -c 'for app in org.gnome.Snapshot org.gnome.SimpleScan org.gnome.Loupe org.gnome.Showtime org.gnome.Decibels org.gnome.Calendar org.gnome.Characters org.gnome.clocks org.gnome.Connections org.gnome.Contacts org.gnome.Maps org.gnome.Weather org.gnome.Logs org.gnome.Papers org.gnome.Extensions org.gnome.NautilusPreviewer org.gnome.FileRoller org.gnome.TextEditor org.gnome.baobab org.gnome.font-viewer; do flatpak uninstall --system --noninteractive -y "$app" >/dev/null 2>&1 || true; done; flatpak uninstall --system --noninteractive -y --unused >/dev/null 2>&1 || true; mkdir -p /var/lib/bluefin-cosmic && touch /var/lib/bluefin-cosmic/gnome-flatpaks-purged'
 
 [Install]
 WantedBy=multi-user.target

@@ -11,7 +11,7 @@ purge-gnome-flatpaks:
         org.gnome.Loupe             # Image Viewer
         org.gnome.Showtime          # Video Player
         org.gnome.Decibels          # Audio Player
-        org.gnome.Calculator
+        # org.gnome.Calculator      # kept: no COSMIC calculator exists
         org.gnome.Calendar
         org.gnome.Characters
         org.gnome.Clocks
