@@ -85,6 +85,13 @@ modules:
 
   - type: justfiles # ships 'ujust purge-gnome-flatpaks' to clean up GNOME flatpaks that survive rebases
 
+  - type: systemd
+    system:
+      enabled:
+        # one-time, self-disabling purge of the GNOME flatpaks Bluefin
+        # pre-installs as system flatpaks (they survive rebases in /var)
+        - purge-gnome-flatpaks.service
+
   - type: default-flatpaks
     configurations:
       - notify: true # Send notification after install/uninstall is finished (true/false)
