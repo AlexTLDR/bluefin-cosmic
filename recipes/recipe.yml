@@ -72,6 +72,8 @@ modules:
         - gnome-online-accounts
         - evolution-data-server
         - malcontent-control
+        # GNOME media server left over from the Silverblue base
+        - rygel
         # NOTE: xdg-desktop-portal-gnome is deliberately kept: it is invisible
         # background plumbing (no GNOME UI) and some flatpaks rely on its
         # portal implementations. Add it here if you want maximum purity.
@@ -80,6 +82,8 @@ modules:
     scripts:
       # wires greetd up to cosmic-greeter and enables it as display manager
       - cosmic-greeter.sh
+
+  - type: justfiles # ships 'ujust purge-gnome-flatpaks' to clean up GNOME flatpaks that survive rebases
 
   - type: default-flatpaks
     configurations:

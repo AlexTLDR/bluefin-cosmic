@@ -13,6 +13,7 @@ Based on [`ghcr.io/ublue-os/bluefin-dx:stable`](https://github.com/ublue-os/blue
   - `gnome-keyring` — provides the secret service used for Wi-Fi passwords and logins
   - `xdg-desktop-portal-gtk` — file chooser / print / inhibit portals that `xdg-desktop-portal-cosmic` does not implement yet
   - `xdg-desktop-portal-gnome` — invisible portal fallback some flatpaks rely on (add it to the removal list in `recipes/recipe.yml` if you want maximum purity)
+- Ships `ujust purge-gnome-flatpaks` — one command to remove GNOME flatpaks that survive rebases (they live in your home dir, not the image). Run it once after installing.
 
 ## Installation
 
