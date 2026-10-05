@@ -1,36 +1,85 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 # image will be published to ghcr.io/<user>/<name>
-name: template
+name: bluefin-cosmic
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: Bluefin DX with the COSMIC desktop environment instead of GNOME.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: latest # You can pin to a specific version of Fedora as well
+base-image: ghcr.io/ublue-os/bluefin-dx
+image-version: stable # Bluefin's stable tag tracks the current Fedora release
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
-  - type: files
-    files:
-      - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
-
   - type: dnf
-    repos:
-      copr:
-        - atim/starship
     install:
       packages:
-        - micro
-        - starship
+        # COSMIC desktop environment (official Fedora packages, no COPR needed).
+        # cosmic-session pulls in the core stack as dependencies:
+        # cosmic-comp, cosmic-panel, cosmic-applets, cosmic-launcher,
+        # pop-launcher, cosmic-settings-daemon, cosmic-bg, cosmic-osd,
+        # cosmic-notifications, cosmic-workspaces, cosmic-app-library
+        - cosmic-session
+        - cosmic-greeter
+        - greetd
+        - cosmic-initial-setup
+        - cosmic-settings
+        - cosmic-files
+        - cosmic-edit
+        - cosmic-term
+        - cosmic-store
+        - cosmic-player
+        - cosmic-screenshot
+        - cosmic-randr
+        - cosmic-idle
+        - cosmic-wallpapers
+        - cosmic-icon-theme
+        - xdg-desktop-portal-cosmic
+        # Not hard dependencies, but needed by COSMIC at runtime -> keep:
+        # gnome-keyring provides the org.freedesktop.secrets service that
+        # COSMIC uses to store Wi-Fi passwords and login credentials.
+        - gnome-keyring
+        # xdg-desktop-portal-gtk provides the FileChooser/Inhibit/Print
+        # portals that xdg-desktop-portal-cosmic does not implement yet.
+        - xdg-desktop-portal-gtk
+
+  - type: dnf
     remove:
+      auto-remove: true # also clean up orphaned dependencies of the removed packages
       packages:
-        # example: removing firefox (in favor of the flatpak)
-        # "firefox" is the main package, "firefox-langpacks" is a dependency
-        - firefox
-        - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+        # GNOME session & shell (gdm requires gnome-shell, so this removes the
+        # entire GNOME desktop; shell extensions are removed as dependents)
+        - gdm
+        - gnome-shell
+        - gnome-session
+        - gnome-classic-session
+        - gnome-control-center
+        - gnome-initial-setup
+        - gnome-tweaks
+        - gnome-tour
+        - gnome-user-docs
+        - gnome-browser-connector
+        - mutter
+        - tecla
+        # Bluefin's GNOME-specific additions
+        - gnome-rounded-blur
+        - nautilus-gsconnect
+        # GNOME apps that COSMIC replaces (or does not use)
+        - nautilus
+        - gnome-disk-utility
+        - gnome-system-monitor
+        - gnome-online-accounts
+        - evolution-data-server
+        - malcontent-control
+        # NOTE: xdg-desktop-portal-gnome is deliberately kept: it is invisible
+        # background plumbing (no GNOME UI) and some flatpaks rely on its
+        # portal implementations. Add it here if you want maximum purity.
+
+  - type: script
+    scripts:
+      # wires greetd up to cosmic-greeter and enables it as display manager
+      - cosmic-greeter.sh
 
   - type: default-flatpaks
     configurations:
@@ -39,7 +88,6 @@ modules:
         # If no repo information is specified, Flathub will be used by default
         install: # system flatpaks we want all users to have and not remove
           - org.mozilla.firefox
-          - org.gnome.Loupe
       - scope: user # Also add Flathub user repo, but no user packages
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
