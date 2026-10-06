@@ -43,6 +43,8 @@ The `latest` tag will automatically point to the latest build. That build will s
 
 > [!NOTE]
 > Your existing user flatpaks survive the rebase. If you were running Bluefin before, you may want to uninstall GNOME flatpaks you no longer need (`flatpak uninstall --unused` and/or `flatpak remove org.gnome.Calculator org.gnome.Calendar …`).
+>
+> Layered packages (`rpm-ostree install …`) also survive rebases. Never layer GNOME packages (e.g. `gnome-tweaks`) — they pull the whole GNOME desktop back as dependencies. Check with `rpm-ostree status` and remove with `sudo rpm-ostree uninstall <pkg>`.
 
 ## Building locally / making your own
 

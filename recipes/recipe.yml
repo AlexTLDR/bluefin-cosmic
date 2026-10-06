@@ -47,6 +47,21 @@ modules:
         - xdg-desktop-portal-gtk
 
   - type: dnf
+    install:
+      packages:
+        # Proton VPN release package: adds the official Proton repo
+        # (protonvpn-fedora-stable) including its GPG key.
+        - https://repo.protonvpn.com/fedora-%OS_VERSION%-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.4-1.noarch.rpm
+
+  - type: dnf
+    install:
+      packages:
+        # Proton VPN desktop app + privileged daemon from the official repo.
+        # NOTE: the Flathub build cannot create WireGuard tunnels (sandboxed
+        # apps lack CAP_NET_ADMIN) - the kill switch then kills all traffic.
+        - proton-vpn-gnome-desktop
+
+  - type: dnf
     remove:
       auto-remove: true # also clean up orphaned dependencies of the removed packages
       packages:
