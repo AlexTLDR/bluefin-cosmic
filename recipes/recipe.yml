@@ -86,6 +86,8 @@ modules:
       - cosmic-greeter.sh
       # installs Proton VPN from the official repo (flatpak cannot create tunnels)
       - install-proton-vpn.sh
+      # installs the latest COSMIC system-monitor applet (resolves latest release via GitHub API)
+      - install-sysmon-applet.sh
 
   - type: justfiles # ships 'ujust purge-gnome-flatpaks' to clean up GNOME flatpaks that survive rebases
 
