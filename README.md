@@ -45,6 +45,8 @@ The `latest` tag will automatically point to the latest build. That build will s
 > Your existing user flatpaks survive the rebase. If you were running Bluefin before, you may want to uninstall GNOME flatpaks you no longer need (`flatpak uninstall --unused` and/or `flatpak remove org.gnome.Calculator org.gnome.Calendar …`).
 >
 > Layered packages (`rpm-ostree install …`) also survive rebases. Never layer GNOME packages (e.g. `gnome-tweaks`) — they pull the whole GNOME desktop back as dependencies. Check with `rpm-ostree status` and remove with `sudo rpm-ostree uninstall <pkg>`.
+>
+> **Kernel note (thunderbolt):** the image ships `thunderbolt.host_reset=0` to work around a kernel 7.2.x regression that hangs poweroff when a USB4 dock was connected (Lenovo USB4 Dock + Clevo/Lunar Lake firmware). On machines installed via `bootc` this applies automatically; after an `rpm-ostree rebase` to this image, run once: `sudo rpm-ostree kargs --append-if-missing=thunderbolt.host_reset=0`. Remove once Fedora ships the fixed kernel.
 
 ## Building locally / making your own
 

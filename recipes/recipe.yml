@@ -89,6 +89,14 @@ modules:
 
   - type: justfiles # ships 'ujust purge-gnome-flatpaks' to clean up GNOME flatpaks that survive rebases
 
+  - type: kargs
+    kargs:
+      # Workaround for kernel 7.2.x thunderbolt regression: the NHI shutdown
+      # deadlocks when a USB4 dock was connected (host router reset hangs on
+      # Clevo/Insyde firmware). Skipping the host reset fixes poweroff.
+      # Remove once the fixed kernel lands in Fedora updates.
+      - thunderbolt.host_reset=0
+
   - type: systemd
     system:
       enabled:
