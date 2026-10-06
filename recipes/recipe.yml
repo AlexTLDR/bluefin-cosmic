@@ -103,6 +103,9 @@ modules:
         # one-time, self-disabling purge of the GNOME flatpaks Bluefin
         # pre-installs as system flatpaks (they survive rebases in /var)
         - purge-gnome-flatpaks.service
+        # feeds user wallpaper/theme into cosmic-greeter (Fedora ships it
+        # disabled by preset; without it the greeter shows the stock bg)
+        - cosmic-greeter-daemon.service
 
   - type: default-flatpaks
     configurations:
