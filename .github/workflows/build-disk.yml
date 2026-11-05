@@ -14,7 +14,6 @@ on:
         type: choice
         options:
           - amd64
-          - arm64
   pull_request:
     branches:
       - main

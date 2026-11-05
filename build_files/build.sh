@@ -8,18 +8,19 @@
 set -ouex pipefail
 
 ### 1. Install COSMIC (Fedora's packages) -----------------------------------------
-# Bluefin's graphics and codec stack comes from negativo17. If installing COSMIC
-# ever swaps any of it for Fedora's stripped builds, fail the build instead of
-# quietly shipping an image without codecs or hardware video decode.
-PROTECTED=(mesa-dri-drivers mesa-vulkan-drivers libva libheif ffmpeg-libs)
-before="$(rpm -q "${PROTECTED[@]}" || true)"
+# Installing COSMIC may add packages and update Fedora ones, but nothing Bluefin
+# already ships may disappear or switch source. Swapping negativo17's mesa or
+# ffmpeg for Fedora's stripped builds, for example, would silently lose codecs
+# and hardware video decode, so the build fails instead.
+snapshot() { rpm -qa --queryformat='%{NAME}\t%{PACKAGER}\n' | LC_ALL=C sort -u; }
+before="$(snapshot)"
 
 dnf5 -y install @cosmic-desktop-environment
 
-after="$(rpm -q "${PROTECTED[@]}" || true)"
-if [[ "${before}" != "${after}" ]]; then
-    echo "Installing COSMIC changed Bluefin's graphics/codec packages:" >&2
-    diff <(echo "${before}") <(echo "${after}") >&2 || true
+changed="$(LC_ALL=C comm -23 <(echo "${before}") <(snapshot))"
+if [[ -n "${changed}" ]]; then
+    echo "Installing COSMIC removed or replaced these Bluefin packages (name, packager):" >&2
+    echo "${changed}" >&2
     exit 1
 fi
 
@@ -45,12 +46,9 @@ systemctl disable gdm.service
 systemctl enable cosmic-greeter.service
 rm -f /usr/share/wayland-sessions/gnome*.desktop /usr/share/xsessions/gnome*.desktop
 
-### 4. System76's COSMIC Flatpak remote, home of panel applets like Minimon -------
-# Done after step 2, in case COSMIC Store shipped its own copy of this file.
-mkdir -p /usr/share/flatpak/remotes.d
-curl --retry 3 -fsSLo /usr/share/flatpak/remotes.d/cosmic.flatpakrepo \
-    https://apt.pop-os.org/cosmic/cosmic.flatpakrepo
-
-### 5. Files from system_files/ (Flatpaks preinstalled on first boot, ...) --------
+### 4. Files from system_files/ ---------------------------------------------------
+# System76's COSMIC Flatpak remote (home of applets like Minimon) and the
+# Flatpaks preinstalled on first boot. Copied after step 2, in case COSMIC Store
+# shipped its own copy of the remote file.
 cp -avf /ctx/system_files/. /
 rm -f /etc/.gitkeep /usr/.gitkeep
