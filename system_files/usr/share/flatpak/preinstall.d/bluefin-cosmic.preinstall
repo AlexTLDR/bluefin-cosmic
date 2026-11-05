@@ -1,0 +1,14 @@
+# Flatpaks installed on first boot by Bluefin's flatpak-preinstall.service.
+# Uninstalling one yourself is respected (it won't come back). Removing an
+# entry from this file uninstalls that app on the next boot, so edit with care.
+
+# Minimon: the CPU / temperature / RAM / network / disk panel applet
+# (from the "cosmic" Flatpak remote that build.sh adds)
+[Flatpak Preinstall io.github.cosmic_utils.minimon-applet]
+Branch=master
+IsRuntime=false
+
+# Firefox, the way Bluefin ships it (Flatpak instead of the RPM)
+[Flatpak Preinstall org.mozilla.firefox]
+Branch=stable
+IsRuntime=false
