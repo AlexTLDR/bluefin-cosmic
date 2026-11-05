@@ -1,0 +1,11 @@
+# System-wide defaults for GTK/libadwaita apps, matching the COSMIC look:
+# Dracula cursors, dark adw-gtk3, Open Sans. Per-user dconf settings win.
+[org/gnome/desktop/interface]
+gtk-theme='adw-gtk3-dark'
+icon-theme='Cosmic'
+cursor-theme='Dracula-cursors'
+cursor-size=24
+font-name='Open Sans 10.5'
+monospace-font-name='Noto Sans Mono 10.5'
+document-font-name='Adwaita Sans 12'
+color-scheme='prefer-dark'

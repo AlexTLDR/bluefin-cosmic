@@ -9,6 +9,9 @@ Bluefin DX with COSMIC as the desktop, built with [ublue-os/image-template](http
 - **GNOME stays installed underneath**, because Bluefin's tooling expects it, but the login screen doesn't offer it.
 - **Bazaar is the only app store.** COSMIC Store is removed.
 - **Preinstalled on first boot:** the Minimon panel applet (CPU, temperature, RAM, network, disk) and Firefox as a Flatpak, the same way Bluefin ships Firefox.
+- **Nerd Fonts system-wide:** FiraCode, JetBrainsMono, CascadiaCode (shown as CaskaydiaCove) and Meslo, from the official Nerd Fonts release, version pinned and bumped by Renovate.
+- **Proton VPN as an RPM:** the official GUI app and CLI (`proton-vpn-gnome-desktop`) from Proton's Fedora repo, with native WireGuard — not the Flatpak. Proton's repo stays enabled, so daily rebuilds ship app updates.
+- **A themed desktop out of the box:** [Dracula](https://draculatheme.com/) cursors and COSMIC accent palette, `adw-gtk3-dark` for GTK apps, Open Sans interface font, FiraCode Nerd Font Mono with Dracula colors in COSMIC Terminal, and the bundled RustArtwork wallpaper. All of it ships as system defaults (`/usr/share/cosmic/`, dconf, `/etc/environment.d/`), so anything you change per-user wins.
 
 All the changes live in [`build_files/build.sh`](build_files/build.sh) and [`system_files/`](system_files).
 
@@ -24,7 +27,7 @@ After that, the image rebuilds daily and on every push. If a build fails, nothin
 
 **Fresh install from a USB stick**
 
-1. Go to Actions → **Build disk images** → Run workflow (amd64).
+1. Go to Actions → **Build disk images** → Run workflow.
 2. Download the ISO artifact.
 3. Flash it, boot it, and install. The installer asks for the disk, your user and the timezone.
 
@@ -44,6 +47,8 @@ Run both commands before rebooting. `reset` drops layered packages and overrides
 - **Bluefin's default apps:** `ujust install-system-flatpaks`.
 - **More dev tools (Zed, JetBrains Toolbox, Lima, …):** `ujust devmode`.
 - **More COSMIC applets:** `flatpak remote-ls cosmic` lists them, and `flatpak install cosmic <id>` installs one.
+- **Using the Nerd Fonts:** set your editor or terminal font to e.g. `FiraCode Nerd Font` (or `FiraCode Nerd Font Mono`). Every Nerd Font contains the same icon glyphs, so the bundled families cover all icons. If you previously copied fonts into `~/.local/share/fonts`, you can delete them.
+- **Proton VPN:** open it from the app launcher and sign in. For the tray icon, add COSMIC's App Tray applet under Settings → Desktop → Panel → Applets. `protonvpn` is the CLI; don't run the GUI and the CLI at the same time.
 - **Coming from Fedora's RPM Firefox:** the Flatpak doesn't pick up your old `~/.mozilla` profile. Use Firefox Sync, or move the profile over.
 - **Updates** run automatically through uupd. `ujust update` runs them now.
 - **Rolling back:** pick the previous entry in the boot menu, or run `sudo bootc rollback`.

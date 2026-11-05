@@ -6,6 +6,17 @@
 
   "rebaseWhen": "never",
 
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Nerd Fonts release version pinned in build_files/build.sh",
+      "managerFilePatterns": ["/^build_files\\/build\\.sh$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\nNERD_FONTS_VERSION=\"(?<currentValue>[^\"]+)\""
+      ]
+    }
+  ],
+
   "packageRules": [
     {
       "automerge": true,
